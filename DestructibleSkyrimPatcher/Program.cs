@@ -21,47 +21,69 @@ namespace LootableThingsPatcher
         }
         private static ModKey LootableThings => ModKey.FromNameAndExtension("MisterBs Lootable Things.esp");
         private static FormLink<IActivatorGetter> ConstructLootableContainer(uint id) => new FormLink<IActivatorGetter>(LootableThings.MakeFormKey(id));
-        private static FormLink<IMoveableStaticGetter> ConstructNonLootable(uint id) => new FormLink<IMoveableStaticGetter>(LootableThings.MakeFormKey(id));
 
-        private static readonly Dictionary<FormKey, IFormLinkGetter<IActivatorGetter>> OriginalDestructibleActivatorPair = new()
+        private static readonly Dictionary<FormKey, IFormLinkGetter<IActivatorGetter>> OriginalLootableContainerPair = new()
         {
-            { Skyrim.Static.CommonChair01Static.FormKey, ConstructLootableContainer(0x002326) },
-            { Skyrim.Static.CommonChair02Static.FormKey, ConstructLootableContainer(0x002327) },
-            { Skyrim.Static.RuinsPot01Static.FormKey, ConstructLootableContainer(0x006F8B) },
-            { Skyrim.Static.RuinsPot02Static.FormKey, ConstructLootableContainer(0x006F8C) },
-            { Skyrim.Static.RuinsPot03Static.FormKey, ConstructLootableContainer(0x002328) },
-            { Skyrim.Static.RuinsPot04Static.FormKey, ConstructLootableContainer(0x002329) },
-            { Skyrim.Static.RuinsPot05Static.FormKey, ConstructLootableContainer(0x00232A) },
-            { Skyrim.Static.RuinsPot06Static.FormKey, ConstructLootableContainer(0x00232B) },
-            { Skyrim.Static.Barrel02Static.FormKey, ConstructLootableContainer(0x00232C) },
-            { Skyrim.Static.WoodenBarStool01Static.FormKey, ConstructLootableContainer(0x002891) },
-            { Skyrim.Static.CommonShelf01.FormKey, ConstructLootableContainer(0x003E23) },
-            { Skyrim.Static.CommonTable01.FormKey, ConstructLootableContainer(0x006456) },
-            { Skyrim.Static.CommonTableRound01.FormKey, ConstructLootableContainer(0x0038B8) },
-            { Skyrim.Static.CommonTableSquare01.FormKey, ConstructLootableContainer(0x0038BA) },
-            { Skyrim.Static.UpperChairStatic.FormKey, ConstructLootableContainer(0x004386) },
-            { Skyrim.Static.NobleChair01Static.FormKey, ConstructLootableContainer(0x0048E9) },
-            { Skyrim.Static.NobleChair02Static.FormKey, ConstructLootableContainer(0x004E4C) },
-            { Skyrim.Static.WoodenChair01Static.FormKey, ConstructLootableContainer(0x0053B0) },
-            { Skyrim.Static.OrcChair01Static.FormKey, ConstructLootableContainer(0x0053B1) },
-            { Skyrim.Static.UpperNightstand01.FormKey, ConstructLootableContainer(0x005914) },
-            { Skyrim.Static.UpperTableRound01.FormKey, ConstructLootableContainer(0x005915) },
-            { Skyrim.Static.UpperTableSquare01.FormKey, ConstructLootableContainer(0x005916) },
-            { Skyrim.Static.UpperTable01.FormKey, ConstructLootableContainer(0x005E79) },
+            { Skyrim.Static.Barrel02Static.FormKey, ConstructLootableContainer(0x35D827) },
+            { Skyrim.Static.Barrel02Static_HeavySN.FormKey, ConstructLootableContainer(0x3A983D) },
+            { Dragonborn.Static.Barrel02Static_LightSN.FormKey, ConstructLootableContainer(0x3A983E) },
+            { Skyrim.Static.CrateSmall01.FormKey, ConstructLootableContainer(0x0012D0) },
+            { Skyrim.Static.CrateSmall01EECo.FormKey, ConstructLootableContainer(0x3442B0) },
+            { Skyrim.Static.CrateSmall01Weathered.FormKey, ConstructLootableContainer(0x0043C4) },
+            { Skyrim.Static.CrateSmall01Weathered_LightSN.FormKey, ConstructLootableContainer(0x3A9844) },
+            { Skyrim.Static.CrateSmall01_LightSN.FormKey, ConstructLootableContainer(0x3A9845) },
+            { Skyrim.Static.CrateSmall02.FormKey, ConstructLootableContainer(0x0069C1) },
+            { Skyrim.Static.CrateSmall02Weathered.FormKey, ConstructLootableContainer(0x0069BF) },
+            { Skyrim.Static.CrateSmall02_LightSN.FormKey, ConstructLootableContainer(0x3A9846) },
+            { Skyrim.Static.CrateSmall03.FormKey, ConstructLootableContainer(0x0074CE) },
+            { Skyrim.Static.CrateSmall03EECo.FormKey, ConstructLootableContainer(0x3442B1) },
+            { Skyrim.Static.CrateSmall03Weathered.FormKey, ConstructLootableContainer(0x0012C5) },
+            { Skyrim.Static.CrateSmall03WeatheredLight_SN.FormKey, ConstructLootableContainer(0x3A9847) },
+            { Skyrim.Static.CrateSmall03WeatheredSnow.FormKey, ConstructLootableContainer(0x3AE955) },
+            { Skyrim.Static.CrateSmall04.FormKey, ConstructLootableContainer(0x004961) },
+            { Skyrim.Static.CrateSmall04Weathered.FormKey, ConstructLootableContainer(0x006F6B) },
+            { Skyrim.Static.CrateSmall04WeatheredLight_SN.FormKey, ConstructLootableContainer(0x3A9849) },
+            { Skyrim.Static.CrateSmallLong01.FormKey, ConstructLootableContainer(0x003E3C) },
+            { Skyrim.Static.CrateSmallLong01EECo.FormKey, ConstructLootableContainer(0x3442B2) },
+            { Skyrim.Static.CrateSmallLong01Weathered.FormKey, ConstructLootableContainer(0x007A4F) },
+            { Skyrim.Static.CrateSmallLong01WeatheredLight_SN.FormKey, ConstructLootableContainer(0x3A984A) },
+            { Skyrim.Static.CrateSmallLong01WeatheredSnow.FormKey, ConstructLootableContainer(0x3A984B) },
+            { Skyrim.Static.CrateSmallLong02.FormKey, ConstructLootableContainer(0x004930) },
+            { Skyrim.Static.CrateSmallLong02Weathered.FormKey, ConstructLootableContainer(0x008FE3) },
+            { Skyrim.Static.CrateSmallLong02WeatheredLight_SN.FormKey, ConstructLootableContainer(0x3A984C) },
+            { Skyrim.Static.CrateSmallLong03.FormKey, ConstructLootableContainer(0x003DFE) },
+            { Skyrim.Static.CrateSmallLong03Weathered.FormKey, ConstructLootableContainer(0x008A7C) },
+            { Dragonborn.Static.CrateSmallLong03WeatheredLightSN.FormKey, ConstructLootableContainer(0x3A984D) },
+            { Skyrim.Static.CrateSmallLong03WeatheredSnow.FormKey, ConstructLootableContainer(0x3A9848) },
+            { Skyrim.Static.CrateSmallLong04.FormKey, ConstructLootableContainer(0x008FE4) },
+            { Skyrim.Static.CrateSmallLong04EECo.FormKey, ConstructLootableContainer(0x3442B3) },
+            { Skyrim.Static.CrateSmallLong04Weathered.FormKey, ConstructLootableContainer(0x008FE5) },
+            { Skyrim.Static.FirewoodPileSmall01.FormKey, ConstructLootableContainer(0x3209F2) },
+            { Skyrim.Static.FirewoodPileSmall01_LightSN.FormKey, ConstructLootableContainer(0x3A9842) },
+            { Skyrim.Static.FirewoodPileMedium01.FormKey, ConstructLootableContainer(0x3493E9) },
+            { Skyrim.Static.FirewoodPileMedium01_LightSN.FormKey, ConstructLootableContainer(0x3A9841) },
+            { Skyrim.Static.FirewoodPileLarge01.FormKey, ConstructLootableContainer(0x3209F3) },
+            { Skyrim.Static.FirewoodPileLarge01_LightSN.FormKey, ConstructLootableContainer(0x3A9840) },
+            { Skyrim.Static.FirewoodPileHuge1.FormKey, ConstructLootableContainer(0x3493E8) },
+            { Skyrim.Static.FirewoodPileHuge1_LightSN.FormKey, ConstructLootableContainer(0x3A9843) },
+            { Skyrim.Static.HagravenHangingBall01.FormKey, ConstructLootableContainer(0x32AC7D) },
+            { Skyrim.Static.HagravenHangingBall02.FormKey, ConstructLootableContainer(0x32AC7E) },
+            { Skyrim.Static.BoneMammothSkull1.FormKey, ConstructLootableContainer(0x39029D) },
+            { Skyrim.Static.BoneMammothSkull1Snow.FormKey, ConstructLootableContainer(0x3A984E) },
+            { Skyrim.Static.BoneMammothSkull1Sulfur.FormKey, ConstructLootableContainer(0x3A984F) },
+            { Skyrim.Static.BoneMammothSkull2.FormKey, ConstructLootableContainer(0x39029E) },
+            { Skyrim.Static.BoneMammothSkull2Snow.FormKey, ConstructLootableContainer(0x3A9850) },
+            { Skyrim.Static.BoneMammothSkull3.FormKey, ConstructLootableContainer(0x39029F) },
+            { Skyrim.Static.BoneMammothSkull3Snow.FormKey, ConstructLootableContainer(0x3A9851) },
+            { Skyrim.Static.BoneMammothSkull3Sulfur.FormKey, ConstructLootableContainer(0x3A9852) },
+            { Skyrim.Static.BoneMammothSkull4.FormKey, ConstructLootableContainer(0x3A983F) },
+            { Skyrim.Static.BoneMammothSkull4Snow.FormKey, ConstructLootableContainer(0x3A9853) },
+            { Skyrim.Static.BoneMammothSkull4Sulfur.FormKey, ConstructLootableContainer(0x3A9854) },
+            // { Skyrim.Static.MeadBarrel_Honningbrew.FormKey, ConstructLootableContainer(0x37BE95) },  // This is added in the mod, but it doesn't have a clear replaced object
+            // { Skyrim.Static.MeadBarrel_Wine.FormKey, ConstructLootableContainer(0x37BE98) },         // This is added in the mod, but it doesn't have a clear replaced object
+            { Skyrim.Static.MeadBarrel01.FormKey, ConstructLootableContainer(0x3B3A56) }
 
 
-        };
-        private static readonly Dictionary<FormKey, IFormLinkGetter<IMoveableStaticGetter>> OriginalDestructibleMoveableStaticPair = new()
-        {
-            { Skyrim.Static.Lantern.FormKey, ConstructNonLootable(0x005E81)},
-            //{ Skyrim.MiscItem.Lantern01.FormKey, ConstructNonLootable(0x005E81) }, - ITM? I suspect the author was running a bad script that was checking by name or something, since all these miscellaneous items are in Destructible Skyrim.esp but they didn't get swapped to the moveable static.
-            { Skyrim.Static.CandleLanternwithCandle01.FormKey, ConstructNonLootable(0x005E80)},
-            { Skyrim.Static.CandleHornTable01.FormKey, ConstructNonLootable(0x0038C0) },
-            { Skyrim.Static.SilverCandleStick01.FormKey, ConstructNonLootable(0x005E7D)},
-            { Skyrim.Static.SilverCandleStick02.FormKey, ConstructNonLootable(0x005E7E)},
-            { Skyrim.Static.SilverCandleStick03.FormKey, ConstructNonLootable(0x005E7F)},
-            { Skyrim.Static.GlazedCandlesStatic.FormKey, ConstructNonLootable(0x0038BE) },
-            { Skyrim.Static.GlazedCandlesStatic02.FormKey, ConstructNonLootable(0x0038BD) },
         };
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
@@ -71,15 +93,10 @@ namespace LootableThingsPatcher
 
             foreach (var placedObjectGetter in state.LoadOrder.PriorityOrder.PlacedObject().WinningContextOverrides(state.LinkCache))
             {
-                if (OriginalDestructibleActivatorPair.TryGetValue(placedObjectGetter.Record.Base.FormKey, out var destructibleActivator))
+                if (OriginalLootableContainerPair.TryGetValue(placedObjectGetter.Record.Base.FormKey, out var LootableContainer))
                 {
                     IPlacedObject copiedPlacedObject = placedObjectGetter.GetOrAddAsOverride(state.PatchMod);
-                    copiedPlacedObject.Base.SetTo(destructibleActivator);
-                }
-                else if (OriginalDestructibleMoveableStaticPair.TryGetValue(placedObjectGetter.Record.Base.FormKey, out var destructibleMoveableStatic))
-                {
-                    IPlacedObject copiedPlacedObject = placedObjectGetter.GetOrAddAsOverride(state.PatchMod);
-                    copiedPlacedObject.Base.SetTo(destructibleMoveableStatic);
+                    copiedPlacedObject.Base.SetTo(LootableContainer);
                 }
             }
         }
