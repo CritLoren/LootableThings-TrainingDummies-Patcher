@@ -87,7 +87,6 @@ namespace LootableThingsPatcher
         };
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
-            state.LoadOrder.AsEnumerable().ToList().ForEach(plugin => Console.WriteLine(plugin.Key));
             if (!state.LoadOrder.ContainsKey(LootableThings))
                 throw new Exception("ERROR: MisterB's Lootable Things not detected in load order. You need to install it prior to running this patcher!");
 
