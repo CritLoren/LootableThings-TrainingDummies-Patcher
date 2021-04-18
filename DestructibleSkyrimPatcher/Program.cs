@@ -65,7 +65,6 @@ namespace DestructibleSkyrimPatcher
         };
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
-            state.LoadOrder.AsEnumerable().ToList().ForEach(plugin => Console.WriteLine(plugin.Key));
             if (!state.LoadOrder.ContainsKey(DestructibleSkyrim))
                 throw new Exception("ERROR: Destructible Skyrim not detected in load order. You need to install Destructible Skyrim prior to running this patcher!");
 
