@@ -106,50 +106,64 @@ namespace LootableThingsPatcher
         };
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
+            if (!state.LoadOrder.ContainsKey(DummyXPmod) && !state.LoadOrder.ContainsKey(LootableThings))
+                {
+                    throw new Exception("You need either MisterB's Lootable Things or Training Dummies and Targets SSE installed for this patch to do anything.");
+                }
 
             // Apply Training Dummies patch
 
-            if (!state.LoadOrder.ContainsKey(DummyXPmod))
-                Console.WriteLine("Training Dummies and Targets SSE not detected in load order. Skipping...");
-            else foreach (var placedObjectGetter in state.LoadOrder.PriorityOrder.PlacedObject().WinningContextOverrides(state.LinkCache))
+            if (state.LoadOrder.ContainsKey(DummyXPmod))
                 {
-                    //DummyPair
-
-                    if (DummyPair.TryGetValue(placedObjectGetter.Record.Base.FormKey, out var ReplacerForm))
+                    Console.WriteLine("Training Dummies and Targets SSE detected. Patching load order...");
+                    foreach (var placedObjectGetter in state.LoadOrder.PriorityOrder.PlacedObject().WinningContextOverrides(state.LinkCache))
                     {
-                        IPlacedObject copiedPlacedObject = placedObjectGetter.GetOrAddAsOverride(state.PatchMod);
-                        copiedPlacedObject.Base.SetTo(ReplacerForm);
-                        // Console.WriteLine("Patched " + placedObjectGetter.Record.Base + " as " + ReplacerForm.FormKey);
-                    }
+                        //DummyPair
 
-                    //DummyPairVanilla
+                        if (DummyPair.TryGetValue(placedObjectGetter.Record.Base.FormKey, out var ReplacerForm))
+                        {
+                            IPlacedObject copiedPlacedObject = placedObjectGetter.GetOrAddAsOverride(state.PatchMod);
+                            copiedPlacedObject.Base.SetTo(ReplacerForm);
+                        }
 
-                    else if (DummyPairVanilla.TryGetValue(placedObjectGetter.Record.Base.FormKey, out var ReplacerForm2))
-                    {
-                        IPlacedObject copiedPlacedObject = placedObjectGetter.GetOrAddAsOverride(state.PatchMod);
-                        copiedPlacedObject.Base.SetTo(ReplacerForm2);
-                        // Console.WriteLine("Patched " + placedObjectGetter.Record.Base + " as " + ReplacerForm2.FormKey);
-                    }
+                        //DummyPairVanilla
+
+                        else if (DummyPairVanilla.TryGetValue(placedObjectGetter.Record.Base.FormKey, out var ReplacerForm2))
+                        {
+                            IPlacedObject copiedPlacedObject = placedObjectGetter.GetOrAddAsOverride(state.PatchMod);
+                            copiedPlacedObject.Base.SetTo(ReplacerForm2);
+                        }
+                    };
+                    Console.WriteLine("Patch completed!");
+                }
+            else
+                {
+                    Console.WriteLine("Training Dummies and Targets SSE not detected in load order. Skipping...");
                 }
 
             // Apply Lootable Things patch
 
-            if (!state.LoadOrder.ContainsKey(LootableThings))
-                Console.WriteLine("MisterB's Lootable Things not detected in load order. Skipping...");
-            else foreach (var placedObjectGetter in state.LoadOrder.PriorityOrder.PlacedObject().WinningContextOverrides(state.LinkCache))
-                {
-                    //OriginalLootableContainerPair
+            if (state.LoadOrder.ContainsKey(LootableThings))
+            {
+                Console.WriteLine("MisterB's Lootable Things detected. Patching load order...");
 
-                    if (OriginalLootableContainerPair.TryGetValue(placedObjectGetter.Record.Base.FormKey, out var ReplacerForm))
+
+                foreach (var placedObjectGetter in state.LoadOrder.PriorityOrder.PlacedObject().WinningContextOverrides(state.LinkCache))
                     {
-                        IPlacedObject copiedPlacedObject = placedObjectGetter.GetOrAddAsOverride(state.PatchMod);
-                        copiedPlacedObject.Base.SetTo(ReplacerForm);
-                        // Console.WriteLine("Patched " + placedObjectGetter.Record.Base + " as " + ReplacerForm.FormKey);
-                    }
-                }
+                        //OriginalLootableContainerPair
 
-            if (!state.LoadOrder.ContainsKey(DummyXPmod) && !state.LoadOrder.ContainsKey(LootableThings))
-                throw new Exception("You need either MisterB's Lootable Things or Training Dummies and Targets SSE installed for this patch to do anything.");
+                        if (OriginalLootableContainerPair.TryGetValue(placedObjectGetter.Record.Base.FormKey, out var ReplacerForm))
+                        {
+                            IPlacedObject copiedPlacedObject = placedObjectGetter.GetOrAddAsOverride(state.PatchMod);
+                            copiedPlacedObject.Base.SetTo(ReplacerForm);
+                        }
+                    };
+                Console.WriteLine("Patch completed!");
+            }
+            else
+            {
+                Console.WriteLine("MisterB's Lootable Things not detected in load order. Skipping...");
+            }
         }
     }
 }
