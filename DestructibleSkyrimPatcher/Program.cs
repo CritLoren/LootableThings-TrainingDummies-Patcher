@@ -14,11 +14,30 @@ namespace LootableThingsPatcher
         {
             return await SynthesisPipeline.Instance
                 .AddPatch<ISkyrimMod, ISkyrimModGetter>(RunPatch)
-                .SetTypicalOpen(GameRelease.SkyrimSE, "LootableThingsPatcher.esp")
+                .SetTypicalOpen(GameRelease.SkyrimSE, "LootableThingsTrainingDummiesPatcher.esp")
                 .Run(args);
         }
+        private static ModKey DummyXPmod => ModKey.FromNameAndExtension("ArcheryDummyXP.esp");
         private static ModKey LootableThings => ModKey.FromNameAndExtension("MisterBs Lootable Things.esp");
+        private static FormLink<IActivatorGetter> TrainingDummyXP(uint id) => new FormLink<IActivatorGetter>(DummyXPmod.MakeFormKey(id));
         private static FormLink<IActivatorGetter> ConstructLootableContainer(uint id) => new FormLink<IActivatorGetter>(LootableThings.MakeFormKey(id));
+
+        // Training Dummies Entries
+
+        private static readonly Dictionary<FormKey, IFormLinkGetter<IActivatorGetter>> DummyPair = new()
+        {
+            { Skyrim.Static.ArcheryTarget.FormKey, TrainingDummyXP(0x0012C4) },
+            { Skyrim.Static.ArcheryTargetSnow.FormKey, TrainingDummyXP(0x0012C5) }
+        };
+
+        private static readonly Dictionary<FormKey, FormKey> DummyPairVanilla = new()
+        {
+            { Skyrim.Static.PracticeDummy01.FormKey, Skyrim.Activator.CombatDummy01.FormKey },
+            { Skyrim.Static.PracticeDummy02.FormKey, Skyrim.Activator.CombatDummy02.FormKey },
+            { Skyrim.Static.PracticeDummy03.FormKey, Skyrim.Activator.CombatDummy03.FormKey }
+        };
+
+        // Lootable Things Entries
 
         private static readonly Dictionary<FormKey, IFormLinkGetter<IActivatorGetter>> OriginalLootableContainerPair = new()
         {
@@ -85,16 +104,63 @@ namespace LootableThingsPatcher
         };
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
-            if (!state.LoadOrder.ContainsKey(LootableThings))
-                throw new Exception("ERROR: MisterB's Lootable Things not detected in load order. You need to install it prior to running this patcher!");
-
-            foreach (var placedObjectGetter in state.LoadOrder.PriorityOrder.PlacedObject().WinningContextOverrides(state.LinkCache))
-            {
-                if (OriginalLootableContainerPair.TryGetValue(placedObjectGetter.Record.Base.FormKey, out var LootableContainer))
+            if (!state.LoadOrder.ContainsKey(DummyXPmod) && !state.LoadOrder.ContainsKey(LootableThings))
                 {
-                    IPlacedObject copiedPlacedObject = placedObjectGetter.GetOrAddAsOverride(state.PatchMod);
-                    copiedPlacedObject.Base.SetTo(LootableContainer);
+                    throw new Exception("You need either MisterB's Lootable Things or Training Dummies and Targets SSE installed for this patch to do anything.");
                 }
+
+            // Apply Training Dummies patch
+
+            if (state.LoadOrder.ContainsKey(DummyXPmod))
+                {
+                    Console.WriteLine("Training Dummies and Targets SSE detected. Patching load order...");
+                    foreach (var placedObjectGetter in state.LoadOrder.PriorityOrder.PlacedObject().WinningContextOverrides(state.LinkCache))
+                    {
+                        //DummyPair
+
+                        if (DummyPair.TryGetValue(placedObjectGetter.Record.Base.FormKey, out var ReplacerForm))
+                        {
+                            IPlacedObject copiedPlacedObject = placedObjectGetter.GetOrAddAsOverride(state.PatchMod);
+                            copiedPlacedObject.Base.SetTo(ReplacerForm);
+                        }
+
+                        //DummyPairVanilla
+
+                        else if (DummyPairVanilla.TryGetValue(placedObjectGetter.Record.Base.FormKey, out var ReplacerForm2))
+                        {
+                            IPlacedObject copiedPlacedObject = placedObjectGetter.GetOrAddAsOverride(state.PatchMod);
+                            copiedPlacedObject.Base.SetTo(ReplacerForm2);
+                        }
+                    };
+                    Console.WriteLine("Patch completed!");
+                }
+            else
+                {
+                    Console.WriteLine("Training Dummies and Targets SSE not detected in load order. Skipping...");
+                }
+
+            // Apply Lootable Things patch
+
+            if (state.LoadOrder.ContainsKey(LootableThings))
+            {
+                Console.WriteLine("MisterB's Lootable Things detected. Patching load order...");
+
+
+                foreach (var placedObjectGetter in state.LoadOrder.PriorityOrder.PlacedObject().WinningContextOverrides(state.LinkCache))
+                    {
+                        //OriginalLootableContainerPair
+
+                        if (OriginalLootableContainerPair.TryGetValue(placedObjectGetter.Record.Base.FormKey, out var ReplacerForm))
+                        {
+                            IPlacedObject copiedPlacedObject = placedObjectGetter.GetOrAddAsOverride(state.PatchMod);
+                            copiedPlacedObject.Base.SetTo(ReplacerForm);
+                        }
+                    };
+                Console.WriteLine("Patch completed!");
+            }
+            else
+            {
+                Console.WriteLine("MisterB's Lootable Things not detected in load order. Skipping...");
             }
         }
     }

@@ -1,8 +1,8 @@
 {
-  "Nickname": "Lootable Things Patcher",
+  "Nickname": "Lootable Things & Training Dummies Patcher",
   "Visibility": "Visible",
-  "OneLineDescription": "Patches mods placing statics in cells/worldspaces using the original Skyrim statics to the Lootable Things containers.",
-  "LongDescription": "",
+  "OneLineDescription": "Lootable Things & Training Dummies and Targets SSE patcher.",
+  "LongDescription": "Patches mods placing statics in cells/worldspaces using the original Skyrim statics to the Lootable Things containers and Training Dummies.",
   "PreferredAutoVersioning": "Default",
-  "RequiredMods": [ "MisterBs Lootable Things.esp" ]
+  "RequiredMods": []
 }
