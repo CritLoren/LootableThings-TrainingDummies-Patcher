@@ -1,8 +1,8 @@
 {
-  "Nickname": "DestructibleSkyrimPatcher",
+  "Nickname": "Lootable Things & Training Dummies Patcher",
   "Visibility": "Visible",
-  "OneLineDescription": "Patches mods placing objects in cells/worldspaces using the original Skyrim statics to Destructible Skyrim's destructible objects",
-  "LongDescription": "",
+  "OneLineDescription": "Lootable Things & Training Dummies and Targets SSE patcher.",
+  "LongDescription": "Patches mods placing statics in cells/worldspaces using the original Skyrim statics to the Lootable Things containers and Training Dummies.",
   "PreferredAutoVersioning": "Default",
-  "RequiredMods": ["Destructible Skyrim.esp"]
+  "RequiredMods": []
 }
